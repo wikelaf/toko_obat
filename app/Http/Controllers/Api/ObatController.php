@@ -83,7 +83,7 @@ class ObatController extends Controller
             'harga_beli' => 'required|numeric|min:0',
             'harga_jual' => 'required|numeric|min:0',
             'expired_date' => 'required|date',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|max:5048',
         ]);
 
         $data = $request->only(['nama_obat', 'stok', 'harga_beli', 'harga_jual', 'expired_date']);

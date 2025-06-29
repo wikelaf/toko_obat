@@ -44,6 +44,17 @@
                     </div>
                 </div>
             </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card shadow border-left-warning">
+                    <div class="card-body d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total User</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalUser }}</div>
+                        </div>
+                        <i class="fas fa-users-cog fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- Quick Actions --}}
@@ -59,6 +70,7 @@
                 </a>
             </div>
         </div>
+
 
         {{-- Welcome Message --}}
         <div class="card mt-4">

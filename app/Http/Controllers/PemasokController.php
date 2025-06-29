@@ -50,4 +50,10 @@ class PemasokController extends Controller
         $pemasok->delete();
         return redirect()->route('pemasok.index')->with('success', 'Pemasok berhasil dihapus');
     }
+
+     public function laporan()
+    {
+        $pemasoks = Pemasok::all();
+        return view('pemasok.laporan', compact('pemasoks'));
+    }
 }

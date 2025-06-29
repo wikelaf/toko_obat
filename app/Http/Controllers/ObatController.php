@@ -113,4 +113,26 @@ class ObatController extends Controller
 
         return redirect()->route('obat.index')->with('success', 'Obat berhasil dihapus');
     }
+
+     public function laporan(Request $request)
+{
+    $query = Obat::query();
+
+    // Filter stok hampir habis (stok < 10)
+    if ($request->filled('stok_hampir_habis')) {
+        $query->where('stok', '<', 10);
+    }
+
+    // Filter obat mendekati expired (misal dalam 30 hari ke depan)
+    if ($request->filled('expired_akan')) {
+        $tanggal_sekarang = now()->toDateString();
+        $tanggal_limit = now()->addDays(30)->toDateString();
+        $query->whereBetween('expired_date', [$tanggal_sekarang, $tanggal_limit]);
+    }
+
+    $obats = $query->orderBy('nama_obat')->get();
+
+    return view('obat.laporan', compact('obats'));
+}
+
 }

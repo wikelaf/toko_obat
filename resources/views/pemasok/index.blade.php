@@ -24,7 +24,7 @@
                 <td>{{ $pemasok->alamat }}</td>
                 <td>{{ $pemasok->telepon }}</td>
                 <td>
-                    <a href="{{ route('pemasok.edit', $pemasok->id_pemasok) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{{ route('pemasok.edit', $pemasok->id_pemasok) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                     <!-- <form action="{{ route('pemasok.destroy', $pemasok->id_pemasok) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('DELETE')
@@ -34,7 +34,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-sm btn-danger btn-hapus">
-                                    <i class="fas fa-trash"></i> Hapus
+                                    <i class="fas fa-trash"></i> 
                                 </button>
                             </form>
                 </td>

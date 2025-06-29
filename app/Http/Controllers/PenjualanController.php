@@ -122,4 +122,57 @@ class PenjualanController extends Controller
     return view('penjualan.faktur', compact('penjualan'));
 }
 
+
+public function laporan(Request $request)
+{
+    $query = Penjualan::with(['pelanggan', 'penjualanDetails.obat']);
+
+    // Filter tanggal
+    if ($request->start_date) {
+        $query->whereDate('tanggal', '>=', $request->start_date);
+    }
+    if ($request->end_date) {
+        $query->whereDate('tanggal', '<=', $request->end_date);
+    }
+
+    // Filter pelanggan
+    if ($request->id_pelanggan) {
+        $query->where('id_pelanggan', $request->id_pelanggan);
+    }
+
+    $periode = $request->periode;
+
+    if ($periode == 'hari') {
+        $penjualans = Penjualan::selectRaw('DATE(tanggal) as periode, SUM(total_harga) as total')
+            ->when($request->start_date, fn($q) => $q->whereDate('tanggal', '>=', $request->start_date))
+            ->when($request->end_date, fn($q) => $q->whereDate('tanggal', '<=', $request->end_date))
+            ->when($request->id_pelanggan, fn($q) => $q->where('id_pelanggan', $request->id_pelanggan))
+            ->groupByRaw('DATE(tanggal)')
+            ->orderBy('periode', 'desc')
+            ->get();
+    } elseif ($periode == 'bulan') {
+        $penjualans = Penjualan::selectRaw("DATE_FORMAT(tanggal, '%Y-%m') as periode, SUM(total_harga) as total")
+            ->when($request->start_date, fn($q) => $q->whereDate('tanggal', '>=', $request->start_date))
+            ->when($request->end_date, fn($q) => $q->whereDate('tanggal', '<=', $request->end_date))
+            ->when($request->id_pelanggan, fn($q) => $q->where('id_pelanggan', $request->id_pelanggan))
+            ->groupByRaw("DATE_FORMAT(tanggal, '%Y-%m')")
+            ->orderBy('periode', 'desc')
+            ->get();
+    } elseif ($periode == 'tahun') {
+        $penjualans = Penjualan::selectRaw("YEAR(tanggal) as periode, SUM(total_harga) as total")
+            ->when($request->start_date, fn($q) => $q->whereDate('tanggal', '>=', $request->start_date))
+            ->when($request->end_date, fn($q) => $q->whereDate('tanggal', '<=', $request->end_date))
+            ->when($request->id_pelanggan, fn($q) => $q->where('id_pelanggan', $request->id_pelanggan))
+            ->groupByRaw("YEAR(tanggal)")
+            ->orderBy('periode', 'desc')
+            ->get();
+    } else {
+        $penjualans = $query->orderBy('tanggal', 'desc')->get();
+    }
+
+    // Kirim data pelanggan untuk filter
+    $pelanggans = Pelanggan::all();
+
+    return view('penjualan.laporan', compact('penjualans', 'pelanggans'));
+}
 }

@@ -78,4 +78,11 @@ class UserController extends Controller
 
         return redirect()->route('user.index')->with('success', 'User berhasil dihapus');
     }
+
+    public function profile()
+{
+    $user = auth()->user();  // ambil data user yg login
+    return view('user.profile', compact('user'));
+}
+
 }

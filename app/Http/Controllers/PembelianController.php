@@ -123,4 +123,39 @@ class PembelianController extends Controller
             return back()->withErrors('Gagal menghapus data pembelian: ' . $e->getMessage());
         }
     }
+
+    
+public function laporan(Request $request)
+{
+    $periode = $request->periode;
+
+    if (in_array($periode, ['hari', 'bulan', 'tahun'])) {
+        // Tampilan ringkasan
+        $pembelians = Pembelian::selectRaw(
+                $periode === 'hari' ? 'DATE(tanggal) as periode' :
+                ($periode === 'bulan' ? "DATE_FORMAT(tanggal, '%Y-%m') as periode" :
+                "YEAR(tanggal) as periode")
+            )
+            ->selectRaw('SUM(total_harga) as total')
+            ->when($request->start_date, fn($q) => $q->whereDate('tanggal', '>=', $request->start_date))
+            ->when($request->end_date, fn($q) => $q->whereDate('tanggal', '<=', $request->end_date))
+            ->when($request->id_pemasok, fn($q) => $q->where('id_pemasok', $request->id_pemasok))
+            ->groupBy('periode')
+            ->orderBy('periode', 'desc')
+            ->get();
+    } else {
+        // Tampilan detail
+        $pembelians = Pembelian::with(['pemasok', 'pembelianDetails.obat'])
+            ->when($request->start_date, fn($q) => $q->whereDate('tanggal', '>=', $request->start_date))
+            ->when($request->end_date, fn($q) => $q->whereDate('tanggal', '<=', $request->end_date))
+            ->when($request->id_pemasok, fn($q) => $q->where('id_pemasok', $request->id_pemasok))
+            ->orderBy('tanggal', 'desc')
+            ->get();
+    }
+
+    $pemasoks = Pemasok::all();
+
+    return view('pembelian.laporan', compact('pembelians', 'pemasoks'));
+}
+
 }

@@ -32,7 +32,7 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->created_at->format('d-m-Y') }}</td>
                                 <td>
-                                    <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                     <!-- <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="d-inline">
                                         @csrf @method('DELETE')
                                         <button class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus user ini?')">Hapus</button>
@@ -41,7 +41,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-sm btn-danger btn-hapus">
-                                    <i class="fas fa-trash"></i> Hapus
+                                    <i class="fas fa-trash"></i> 
                                 </button>
                             </form>
                                 </td>

@@ -35,13 +35,13 @@
             <td>{{ $pembelian->pemasok->nama ?? '-' }}</td>
             <td>Rp {{ number_format($pembelian->total_harga,0,',','.') }}</td>
             <td>
-                <a href="{{ route('pembelian.show', $pembelian->id_pembelian) }}" class="btn btn-info btn-sm">Detail</a>
+                <a href="{{ route('pembelian.show', $pembelian->id_pembelian) }}" class="btn btn-info btn-sm"><i class="fas fa-search"></i></a>
 
                 <form action="{{ route('pembelian.destroy', $pembelian->id_pembelian) }}" method="POST" style="display:inline-block;" class="form-hapus">
                         @csrf
                         @method('DELETE')
                         <button type="button" class="btn btn-sm btn-danger btn-hapus">
-                            <i class="fas fa-trash"></i> Hapus
+                            <i class="fas fa-trash"></i> 
                         </button>
                     </form>
             </td>

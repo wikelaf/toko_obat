@@ -40,6 +40,15 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+         'sanctum' => [
+        'driver' => 'sanctum',
+        'provider' => 'users',
+    ],
+
+    'pelanggan-api' => [
+        'driver' => 'sanctum',
+        'provider' => 'pelanggans',
+    ],
     ],
 
     /*
@@ -64,6 +73,11 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
+        
+    'pelanggans' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Pelanggan::class,
+    ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -97,6 +111,13 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+          'pelanggans' => [
+        'provider' => 'pelanggans',
+        'table' => env('pelanggan_password_resets'), // sesuaikan tabelnya jika ada
+        'expire' => 60,
+        'throttle' => 60,
+    ],
     ],
 
     /*

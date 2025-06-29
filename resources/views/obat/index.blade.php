@@ -36,7 +36,9 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ route('obat.edit', $obat->id_obat) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{{ route('obat.edit', $obat->id_obat) }}" class="btn btn-warning btn-sm">
+                    <i class="fas fa-edit"></i>
+                    </a>
                     <!-- <form action="{{ route('obat.destroy', $obat->id_obat) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('DELETE')
@@ -46,7 +48,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-sm btn-danger btn-hapus">
-                                    <i class="fas fa-trash"></i> Hapus
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                 </td>

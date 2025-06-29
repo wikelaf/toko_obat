@@ -35,13 +35,13 @@
             <td>{{ $penjualan->pelanggan->nama ?? '-' }}</td>
             <td>Rp {{ number_format($penjualan->total_harga,0,',','.') }}</td>
             <td>
-                <a href="{{ route('penjualan.show', $penjualan->id_penjualan) }}" class="btn btn-info btn-sm">Detail</a>
- <a href="{{ route('penjualan.faktur', $penjualan->id_penjualan) }}" class="btn btn-secondary btn-sm" target="_blank">Faktur</a>
+                <a href="{{ route('penjualan.show', $penjualan->id_penjualan) }}" class="btn btn-info btn-sm"><i class="fas fa-search"></i></a>
+                 <a href="{{ route('penjualan.faktur', $penjualan->id_penjualan) }}" class="btn btn-secondary btn-sm" target="_blank"><i class="fas fa-clipboard-list"></i></a>
                 <form action="{{ route('penjualan.destroy', $penjualan->id_penjualan) }}" method="POST" style="display:inline-block;" class="form-hapus">
                         @csrf
                         @method('DELETE')
                         <button type="button" class="btn btn-sm btn-danger btn-hapus">
-                            <i class="fas fa-trash"></i> Hapus
+                            <i class="fas fa-trash"></i> 
                         </button>
                     </form>
             </td>
