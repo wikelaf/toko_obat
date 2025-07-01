@@ -2,11 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ObatController;
-use App\Http\Controllers\PelangganController;
-use App\Http\Controllers\PemasokController;
-use App\Http\Controllers\PembelianController;
-use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\Api\ObatController;
+use App\Http\Controllers\Api\PelangganController;
+use App\Http\Controllers\Api\PemasokController;
+use App\Http\Controllers\Api\PembelianController;
+use App\Http\Controllers\Api\PenjualanController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ChangePasswordController;
@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->post('/logout-pelanggan', [LoginController::c
 
 Route::middleware('auth:sanctum')->put('/change-password', [ChangePasswordController::class, 'updateUser']);
 Route::middleware('auth:pelanggan-api')->put('/change-password', [ChangePasswordController::class, 'updatePelanggan']);
+Route::get('/penjualan/pelanggan/{id}', [PenjualanController::class, 'riwayatByPelanggan']);
 
 
 

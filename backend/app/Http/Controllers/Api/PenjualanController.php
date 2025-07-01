@@ -118,4 +118,18 @@ class PenjualanController extends Controller
             return response()->json(['message' => 'Gagal menghapus: ' . $e->getMessage()], 500);
         }
     }
+
+    public function riwayatByPelanggan($id)
+{
+    try {
+        $penjualan = Penjualan::with('pelanggan', 'penjualanDetails.obat')
+            ->where('id_pelanggan', $id)
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        return response()->json($penjualan);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
 }
