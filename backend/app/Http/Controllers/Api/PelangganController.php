@@ -77,6 +77,7 @@ class PelangganController extends Controller
         $rules['password'] = 'string|min:6';
     }
 
+    
     $validator = Validator::make($request->all(), $rules);
 
     if ($validator->fails()) {
