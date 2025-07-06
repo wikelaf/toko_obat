@@ -58,32 +58,44 @@ class PelangganController extends Controller
     }
 
     // PUT /api/pelanggan/{id}
-    public function update(Request $request, $id)
-    {
-        $pelanggan = Pelanggan::find($id);
+   public function update(Request $request, $id)
+{
+    $pelanggan = Pelanggan::find($id);
 
-        if (!$pelanggan) {
-            return response()->json(['message' => 'Pelanggan tidak ditemukan.'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'nama'     => 'required|string|max:100',
-            'email'    => 'required|email|unique:pelanggans,email,' . $id . ',id_pelanggan',
-            'alamat'   => 'required|string',
-            'telepon'  => 'required|string|max:20',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => 'Validasi gagal', 'errors' => $validator->errors()], 422);
-        }
-
-        $pelanggan->update($request->only(['nama', 'email', 'alamat', 'telepon']));
-
-        return response()->json([
-            'message' => 'Pelanggan berhasil diupdate.',
-            'data'    => $pelanggan
-        ], 200);
+    if (!$pelanggan) {
+        return response()->json(['message' => 'Pelanggan tidak ditemukan.'], 404);
     }
+
+    $rules = [
+        'nama'    => 'required|string|max:100',
+        'email'   => 'required|email|unique:pelanggans,email,' . $id . ',id_pelanggan',
+        'alamat'  => 'required|string',
+        'telepon' => 'required|string|max:20',
+    ];
+
+    if ($request->filled('password')) {
+        $rules['password'] = 'string|min:6';
+    }
+
+    $validator = Validator::make($request->all(), $rules);
+
+    if ($validator->fails()) {
+        return response()->json(['message' => 'Validasi gagal', 'errors' => $validator->errors()], 422);
+    }
+
+    $data = $request->only(['nama', 'email', 'alamat', 'telepon']);
+    if ($request->filled('password')) {
+        $data['password'] = bcrypt($request->password);
+    }
+
+    $pelanggan->update($data);
+
+    return response()->json([
+        'message' => 'Pelanggan berhasil diupdate.',
+        'data'    => $pelanggan
+    ], 200);
+}
+
 
     // DELETE /api/pelanggan/{id}
     public function destroy($id)
