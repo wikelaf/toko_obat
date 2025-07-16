@@ -171,6 +171,7 @@ class _AddPenjualanScreenState extends State<AddPenjualanScreen> {
                   child: Padding(
                     padding: EdgeInsets.all(12),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         DropdownButtonFormField<ObatModel>(
                           decoration: InputDecoration(labelText: 'Pilih Obat'),

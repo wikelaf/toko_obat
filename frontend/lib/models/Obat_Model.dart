@@ -65,7 +65,7 @@ class ObatModel {
     if (foto.startsWith('http')) {
       return foto;
     } else {
-      return 'http://192.168.241.67:8000/storage/$foto'; // sesuaikan IP dan path
+      return 'http://192.168.226.206:8000/storage/$foto'; // sesuaikan IP dan path
     }
   }
 }

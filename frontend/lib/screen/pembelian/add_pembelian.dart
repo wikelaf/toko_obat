@@ -166,6 +166,7 @@ class _AddPembelianScreenState extends State<AddPembelianScreen> {
               child: Form(
                 key: _formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     GestureDetector(
                       onTap: () async {
@@ -223,6 +224,7 @@ class _AddPembelianScreenState extends State<AddPembelianScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(8),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               DropdownButtonFormField<int>(
                                 value: detailPembelian[index]['id_obat'],

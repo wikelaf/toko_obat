@@ -69,6 +69,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
                 controller: _nameController,

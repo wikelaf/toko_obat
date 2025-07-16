@@ -1,6 +1,8 @@
 class PelangganModel {
   final int idPelanggan;
   final String nama;
+   final String email;
+  final String password;
   final String alamat;
   final String telepon;
   final String createdAt;
@@ -9,6 +11,8 @@ class PelangganModel {
   PelangganModel({
     required this.idPelanggan,
     required this.nama,
+    required this.email,
+    required this.password,
     required this.alamat,
     required this.telepon,
     required this.createdAt,
@@ -19,6 +23,8 @@ class PelangganModel {
     return PelangganModel(
       idPelanggan: json['id_pelanggan'],
       nama: json['nama'],
+      email: json['email'] ?? '',
+      password: json[''] ?? '',
       alamat: json['alamat'] ?? '',
       telepon: json['telepon'] ?? '',
       createdAt: json['created_at'] ?? '',
