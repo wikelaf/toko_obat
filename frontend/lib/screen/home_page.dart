@@ -71,38 +71,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         PopupMenuItem(
-          child: SwitchListTile(
-            title: const Text('Dark Mode'),
-            value: _isDarkMode,
-            onChanged: (val) {
-              setState(() => _isDarkMode = val);
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        PopupMenuItem(
-          child: ListTile(
-            leading: const Icon(Icons.language),
-            title: Text('Bahasa: ${_selectedLanguage == 'ID' ? 'Indonesia' : 'English'}'),
-            onTap: () {
-              setState(() {
-                _selectedLanguage = _selectedLanguage == 'ID' ? 'EN' : 'ID';
-              });
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        PopupMenuItem(
-          child: ListTile(
-            leading: const Icon(Icons.help_outline),
-            title: const Text('Panduan Penggunaan'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/help');
-            },
-          ),
-        ),
-        PopupMenuItem(
           child: ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),

@@ -15,7 +15,7 @@ class ObatProvider extends ChangeNotifier {
   notifyListeners();
 
   try {
-    final response = await http.get(Uri.parse('http://192.168.241.67:8000/api/obat'));
+    final response = await http.get(Uri.parse('http://192.168.226.206:8000/api/obat'));
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       _listObat = data.map((json) => ObatModel.fromJson(json)).toList();

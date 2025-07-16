@@ -6,7 +6,6 @@ class EditPelangganScreen extends StatefulWidget {
   final PelangganModel pelanggan;
   const EditPelangganScreen({Key? key, required this.pelanggan}) : super(key: key);
 
-
   @override
   State<EditPelangganScreen> createState() => _EditPelangganScreenState();
 }
@@ -14,13 +13,16 @@ class EditPelangganScreen extends StatefulWidget {
 class _EditPelangganScreenState extends State<EditPelangganScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _namaController;
+  late TextEditingController _emailController;
   late TextEditingController _alamatController;
   late TextEditingController _teleponController;
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _namaController = TextEditingController(text: widget.pelanggan.nama);
+    _emailController = TextEditingController(text: widget.pelanggan.email);
     _alamatController = TextEditingController(text: widget.pelanggan.alamat);
     _teleponController = TextEditingController(text: widget.pelanggan.telepon);
   }
@@ -28,8 +30,10 @@ class _EditPelangganScreenState extends State<EditPelangganScreen> {
   @override
   void dispose() {
     _namaController.dispose();
+    _emailController.dispose();
     _alamatController.dispose();
     _teleponController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -38,13 +42,18 @@ class _EditPelangganScreenState extends State<EditPelangganScreen> {
       final updatedPelanggan = PelangganModel(
         idPelanggan: widget.pelanggan.idPelanggan,
         nama: _namaController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
         alamat: _alamatController.text,
         telepon: _teleponController.text,
         createdAt: widget.pelanggan.createdAt,
         updatedAt: widget.pelanggan.updatedAt,
       );
 
-      final success = await ApiPelanggan.updatePelanggan(updatedPelanggan);
+      final success = await ApiPelanggan.updatePelanggan(
+        updatedPelanggan,
+        password: _passwordController.text.isNotEmpty ? _passwordController.text : null,
+      );
 
       if (success) {
         Navigator.pop(context, true);
@@ -71,6 +80,24 @@ class _EditPelangganScreenState extends State<EditPelangganScreen> {
                 decoration: InputDecoration(labelText: 'Nama Pelanggan'),
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Nama tidak boleh kosong' : null,
+              ),
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Email'),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'Email tidak boleh kosong';
+                  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                  if (!emailRegex.hasMatch(value)) return 'Format email tidak valid';
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password (kosongkan jika tidak diubah)',
+                ),
+                obscureText: true,
               ),
               TextFormField(
                 controller: _alamatController,

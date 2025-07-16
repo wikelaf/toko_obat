@@ -106,6 +106,7 @@ class _HomePelangganScreenState extends State<HomePelangganScreen> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text('Email: ${pelanggan.email ?? "-"}'),
                         Text('Alamat: ${pelanggan.alamat ?? "-"}'),
                         Text('Telepon: ${pelanggan.telepon ?? "-"}'),
                       ],

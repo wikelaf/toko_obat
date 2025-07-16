@@ -64,6 +64,7 @@ class _AddPemasokScreenState extends State<AddPemasokScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
                 controller: _namaController,

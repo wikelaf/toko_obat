@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/Penjualan_Model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class ApiPenjualan {
-  static const String baseUrl = 'http://192.168.241.67:8000/api/penjualan';
+  static const String baseUrl = 'http://10.22.112.67:8000/api/penjualan';
 
   // Ambil semua data penjualan
   static Future<List<PenjualanModel>> fetchPenjualan() async {
@@ -83,7 +83,7 @@ class ApiPenjualan {
   }
 
   final response = await http.get(
-    Uri.parse('http://192.168.241.67:8000/api/penjualan/pelanggan/$idPelanggan'),
+    Uri.parse('http://10.22.112.67:8000/api/penjualan/pelanggan/$idPelanggan'),
   );
 
   if (response.statusCode == 200) {
