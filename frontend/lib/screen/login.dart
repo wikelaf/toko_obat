@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       // 1. Coba login sebagai Admin/User
       final userResponse = await http.post(
-        Uri.parse('http://192.168.241.67:8000/api/login'),
+        Uri.parse('http://10.22.112.67:8000/api/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
 
       // 2. Jika gagal, coba login sebagai pelanggan
       final pelangganResponse = await http.post(
-        Uri.parse('http://192.168.241.67:8000/api/login-pelanggan'),
+        Uri.parse('http://10.22.112.67:8000/api/login-pelanggan'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );

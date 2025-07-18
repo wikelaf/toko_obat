@@ -9,13 +9,18 @@ class AddPelangganScreen extends StatefulWidget {
 
 class _AddPelangganScreenState extends State<AddPelangganScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final _namaController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   final _alamatController = TextEditingController();
   final _teleponController = TextEditingController();
 
   @override
   void dispose() {
     _namaController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     _alamatController.dispose();
     _teleponController.dispose();
     super.dispose();
@@ -27,6 +32,8 @@ class _AddPelangganScreenState extends State<AddPelangganScreen> {
         final pelanggan = PelangganModel(
           idPelanggan: 0,
           nama: _namaController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
           alamat: _alamatController.text,
           telepon: _teleponController.text,
           createdAt: '',
@@ -47,7 +54,7 @@ class _AddPelangganScreenState extends State<AddPelangganScreen> {
         }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Kesalahan input: $e')),
+          SnackBar(content: Text('Kesalahan: $e')),
         );
       }
     }
@@ -56,36 +63,51 @@ class _AddPelangganScreenState extends State<AddPelangganScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Tambah Pelanggan'),
-      ),
+      appBar: AppBar(title: Text('Tambah Pelanggan')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _namaController,
-                decoration: InputDecoration(labelText: 'Nama Pelanggan'),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Nama tidak boleh kosong' : null,
-              ),
-              TextFormField(
-                controller: _alamatController,
-                decoration: InputDecoration(labelText: 'Alamat'),
-              ),
-              TextFormField(
-                controller: _teleponController,
-                decoration: InputDecoration(labelText: 'Telepon'),
-                keyboardType: TextInputType.phone,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _submit,
-                child: Text('Simpan Pelanggan'),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                  controller: _namaController,
+                  decoration: InputDecoration(labelText: 'Nama'),
+                  validator: (value) => value == null || value.isEmpty ? 'Nama wajib diisi' : null,
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) => value == null || value.isEmpty ? 'Email wajib diisi' : null,
+                ),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  validator: (value) =>
+                      value == null || value.length < 6 ? 'Password minimal 6 karakter' : null,
+                ),
+                TextFormField(
+                  controller: _alamatController,
+                  decoration: InputDecoration(labelText: 'Alamat'),
+                  validator: (value) => value == null || value.isEmpty ? 'Alamat wajib diisi' : null,
+                ),
+                TextFormField(
+                  controller: _teleponController,
+                  decoration: InputDecoration(labelText: 'Telepon'),
+                  keyboardType: TextInputType.phone,
+                  validator: (value) => value == null || value.isEmpty ? 'Telepon wajib diisi' : null,
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _submit,
+                  child: Text('Simpan Pelanggan'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

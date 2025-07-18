@@ -4,8 +4,9 @@ import '../models/Pelanggan_Model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiPelanggan {
-  static const String baseUrl = 'http://192.168.241.67:8000/api/pelanggan';
+  static const String baseUrl = 'http://10.22.112.67:8000/api/pelanggan';
 
+ 
   // Ambil semua data pelanggan
   static Future<List<PelangganModel>> fetchPelanggan() async {
     final response = await http.get(Uri.parse(baseUrl));
@@ -17,13 +18,15 @@ class ApiPelanggan {
     }
   }
 
-  // Tambah pelanggan baru
+  // Tambah pelanggan baru (wajib password)
   static Future<bool> createPelanggan(PelangganModel pelanggan) async {
     final response = await http.post(
       Uri.parse(baseUrl),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'nama': pelanggan.nama,
+        'email': pelanggan.email,
+        'password': pelanggan.password,
         'alamat': pelanggan.alamat,
         'telepon': pelanggan.telepon,
       }),
@@ -37,22 +40,29 @@ class ApiPelanggan {
     }
   }
 
-  // Update pelanggan
-  static Future<bool> updatePelanggan(PelangganModel pelanggan) async {
+  // Update pelanggan (password opsional)
+  static Future<bool> updatePelanggan(PelangganModel pelanggan, {String? password}) async {
+    final Map<String, dynamic> bodyData = {
+      'nama': pelanggan.nama,
+      'email': pelanggan.email,
+      'alamat': pelanggan.alamat,
+      'telepon': pelanggan.telepon,
+    };
+
+    if (password != null && password.isNotEmpty) {
+      bodyData['password'] = password;
+    }
+
     final response = await http.put(
       Uri.parse('$baseUrl/${pelanggan.idPelanggan}'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'nama': pelanggan.nama,
-        'alamat': pelanggan.alamat,
-        'telepon': pelanggan.telepon,
-      }),
+      body: jsonEncode(bodyData),
     );
 
     if (response.statusCode == 200) {
       return true;
     } else {
-      print('Update gagal: ${response.statusCode} - ${response.body}');
+      print('Update pelanggan gagal: ${response.statusCode} - ${response.body}');
       return false;
     }
   }
@@ -66,7 +76,7 @@ class ApiPelanggan {
     required String telepon,
   }) async {
     final response = await http.put(
-      Uri.parse('http://192.168.241.67:8000/api/pelanggan/$id'),
+      Uri.parse('http://10.22.112.67:8000/api/pelanggan/$id'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'nama': nama,
@@ -110,7 +120,7 @@ class ApiPelanggan {
   if (token == null) return false;
 
   final response = await http.put(
-    Uri.parse('http://192.168.241.67:8000/api/change-password'),
+    Uri.parse('http://10.22.112.67:8000/api/change-password'),
     headers: {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
