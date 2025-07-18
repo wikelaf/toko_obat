@@ -32,7 +32,7 @@ Route::post('/register-pelanggan', [LoginController::class, 'registerPelanggan']
 Route::post('/login-pelanggan', [LoginController::class, 'loginPelanggan']);
 Route::middleware('auth:sanctum')->post('/logout-pelanggan', [LoginController::class, 'logoutPelanggan']);
 
-Route::middleware('auth:sanctum')->put('/change-password', [ChangePasswordController::class, 'updateUser']);
+Route::middleware('auth:sanctum')->put('/change-password-user', [ChangePasswordController::class, 'updateUser']);
 Route::middleware('auth:pelanggan-api')->put('/change-password', [ChangePasswordController::class, 'updatePelanggan']);
 Route::get('/penjualan/pelanggan/{id}', [PenjualanController::class, 'riwayatByPelanggan']);
 
