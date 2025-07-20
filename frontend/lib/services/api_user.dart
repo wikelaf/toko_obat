@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/User_Model.dart';
 
 class ApiUser {
-  static const String baseUrl = 'http://10.22.112.67:8000/api/user';
+  static const String baseUrl = 'http://10.98.206.67:8000/api/user';
 
   // Ambil semua data user
   static Future<List<UserModel>> fetchUsers() async {

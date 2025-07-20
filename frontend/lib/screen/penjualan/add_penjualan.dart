@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 
 import '../../models/Pelanggan_Model.dart';
 import '../../models/Obat_Model.dart';
-import '../../models/Penjualan_Model.dart';
 import '../../services/api_pelanggan.dart';
 import '../../services/api_service.dart';
 import '../../services/api_penjualan.dart';

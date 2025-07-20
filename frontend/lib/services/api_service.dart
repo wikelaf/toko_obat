@@ -10,7 +10,7 @@ import '../models/Obat_Model.dart';
 
 
 class ApiService {
-  static const String baseUrl = 'http://10.22.112.67:8000/api/obat';
+  static const String baseUrl = 'http://10.98.206.67:8000/api/obat';
 
   // Get all obat
   static Future<List<ObatModel>> fetchObat() async {
@@ -96,7 +96,7 @@ class ApiService {
 
   // Login user
   static Future<String?> login(String email, String password) async {
-    final url = 'http://10.22.112.67:8000/api/login';
+    final url = 'http://10.98.206.67:8000/api/login';
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
@@ -129,7 +129,7 @@ else {
 
   // Login pelanggan
   static Future<Map<String, dynamic>?> loginPelanggan(String email, String password) async {
-    const url = 'http://10.22.112.67:8000/api/login-pelanggan';
+    const url = 'http://10.98.206.67:8000/api/login-pelanggan';
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
@@ -158,7 +158,7 @@ else {
     required String metode,
     required List<Map<String, dynamic>> penjualanDetails,
   }) async {
-    final url = 'http://10.22.112.67:8000/api/penjualan';
+    final url = 'http://10.98.206.67:8000/api/penjualan';
     final body = jsonEncode({
       'id_pelanggan': idPelanggan,
       'alamat': alamat,

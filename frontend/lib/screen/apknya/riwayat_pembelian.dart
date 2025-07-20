@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/api_penjualan.dart';
 import '../../models/Penjualan_Model.dart';
-import '../../models/Obat_Model.dart';
 
 class RiwayatPembelianScreen extends StatefulWidget {
   const RiwayatPembelianScreen({super.key});

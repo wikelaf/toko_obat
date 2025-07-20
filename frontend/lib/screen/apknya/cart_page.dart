@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/cart_model.dart';
-import '../../models/cart_item.dart';
 import 'transaksi_page.dart';
 import '../apknya/cart_item_cart.dart';
 

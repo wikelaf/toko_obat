@@ -23,7 +23,7 @@ class _RegisterPelangganPageState extends State<RegisterPelangganPage> {
 
     setState(() => isLoading = true);
 
-    final url = Uri.parse('http://10.22.112.67:8000/api/register-pelanggan'); // ganti IP sesuai server kamu
+    final url = Uri.parse('http://10.98.206.67:8000/api/register-pelanggan'); // ganti IP sesuai server kamu
 
     final response = await http.post(
       url,
