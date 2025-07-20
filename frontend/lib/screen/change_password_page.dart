@@ -1,12 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({super.key});
-
   @override
   State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
@@ -28,21 +25,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
     if (token == null || role == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Token atau role tidak ditemukan. Silakan login ulang.')),
+        SnackBar(content: Text('Token atau role tidak ditemukan. Silakan login ulang.')),
       );
       return;
     }
 
-    String baseUrl = 'http://192.168.212.206:8000';
+    String baseUrl = 'http://10.98.206.67:8000';
     String url;
 
     if (role == 'admin') {
-      url = '$baseUrl/api/change-password';
+      url = '$baseUrl/api/change-password-user';
     } else if (role == 'pelanggan') {
-      url = '$baseUrl/api/pelanggan/change-password';
+      url = '$baseUrl/api/change-password';
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Role tidak dikenali')),
+        SnackBar(content: Text('Role tidak dikenali')),
       );
       return;
     }
@@ -85,105 +82,79 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      backgroundColor: Color(0xFFEFF4FF), // Background soft blue
       appBar: AppBar(
-        title: const Text('Ganti Password'),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: BackButton(color: Colors.black),
+        title: Text('Ganti Password', style: TextStyle(color: Colors.black)),
         centerTitle: true,
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFE0ECFF), Color(0xFFF7F9FC)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Card(
-              elevation: 12,
-              shape: RoundedRectangleBorder(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Container(
+              margin: EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  )
+                ],
               ),
-              shadowColor: Colors.blueGrey.withOpacity(0.1),
-              child: Padding(
-                padding: const EdgeInsets.all(28),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Icon(Icons.lock_reset,
-                          size: 64, color: Colors.blueAccent.withOpacity(0.8)),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Perbarui Password Anda',
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blueGrey.shade700,
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      _buildTextField(
-                        controller: currentPasswordController,
-                        label: 'Password Saat Ini',
-                        icon: Icons.lock_outline,
-                      ),
-                      const SizedBox(height: 20),
-                      _buildTextField(
-                        controller: newPasswordController,
-                        label: 'Password Baru',
-                        icon: Icons.lock_reset,
-                      ),
-                      const SizedBox(height: 20),
-                      _buildTextField(
-                        controller: confirmNewPasswordController,
-                        label: 'Konfirmasi Password Baru',
-                        icon: Icons.check_circle_outline,
-                        validator: (value) => value != newPasswordController.text
-                            ? 'Password tidak sama'
-                            : null,
-                      ),
-                      const SizedBox(height: 32),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32),
-                            ),
-                            backgroundColor: Colors.blueAccent,
-                          ),
-                          onPressed: isLoading ? null : _changePassword,
-                          child: isLoading
-                              ? const SizedBox(
-                                  height: 24,
-                                  width: 24,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text(
-                                  'Simpan Perubahan',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ],
+              child: Column(
+                children: [
+                  Icon(Icons.lock_reset, size: 64, color: Colors.blue),
+                  SizedBox(height: 10),
+                  Text(
+                    'Perbarui Password Anda',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                ),
+                  SizedBox(height: 24),
+                  _buildPasswordField(
+                    controller: currentPasswordController,
+                    label: 'Password Saat Ini',
+                    icon: Icons.lock_outline,
+                  ),
+                  SizedBox(height: 16),
+                  _buildPasswordField(
+                    controller: newPasswordController,
+                    label: 'Password Baru',
+                    icon: Icons.lock_reset,
+                  ),
+                  SizedBox(height: 16),
+                  _buildPasswordField(
+                    controller: confirmNewPasswordController,
+                    label: 'Konfirmasi Password Baru',
+                    icon: Icons.verified_user_outlined,
+                    validator: (value) =>
+                        value != newPasswordController.text ? 'Password tidak sama' : null,
+                  ),
+                  SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: isLoading ? null : _changePassword,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        padding: EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: isLoading
+                          ? CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
+                          : Text('Simpan Perubahan', style: TextStyle(fontSize: 16)),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -192,7 +163,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     );
   }
 
-  Widget _buildTextField({
+  Widget _buildPasswordField({
     required TextEditingController controller,
     required String label,
     required IconData icon,
@@ -203,18 +174,20 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       obscureText: true,
       validator: validator ??
           (value) =>
-              value == null || value.isEmpty ? 'Field ini wajib diisi' : null,
+              value == null || value.trim().isEmpty ? 'Wajib diisi' : null,
       decoration: InputDecoration(
-        prefixIcon: Icon(icon, color: Colors.blueAccent),
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.blueGrey),
-        border: OutlineInputBorder(
+        prefixIcon: Icon(icon, color: Colors.blue),
+        hintText: label,
+        filled: true,
+        fillColor: Color(0xFFF7F7F7),
+        contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: Colors.blueAccent),
+          borderSide: BorderSide(color: Colors.grey.shade300),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: Colors.blueAccent, width: 2),
+          borderSide: BorderSide(color: Colors.blue),
         ),
       ),
     );

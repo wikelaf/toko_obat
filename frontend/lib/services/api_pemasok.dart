@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/Pemasok_Model.dart';
 
 class ApiPemasok {
-  static const String baseUrl = 'http://10.22.112.67:8000/api/pemasok';
+  static const String baseUrl = 'http://10.98.206.67:8000/api/pemasok';
 
   // Ambil semua data pemasok
   static Future<List<PemasokModel>> fetchPemasok() async {

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/Pembelian_Model.dart';
 
 class ApiPembelian {
-  static const String baseUrl = 'http://10.22.112.67:8000/api/pembelian';
+  static const String baseUrl = 'http://10.98.206.67:8000/api/pembelian';
 
   // Ambil semua data pembelian
   static Future<List<PembelianModel>> fetchPembelian() async {
