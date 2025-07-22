@@ -4,7 +4,7 @@ import '../models/Pelanggan_Model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiPelanggan {
-  static const String baseUrl = 'http://10.22.112.67:8000/api/pelanggan';
+  static const String baseUrl = 'http://10.98.206.67:8000/api/pelanggan';
 
  
   // Ambil semua data pelanggan
@@ -76,7 +76,7 @@ class ApiPelanggan {
     required String telepon,
   }) async {
     final response = await http.put(
-      Uri.parse('http://10.22.112.67:8000/api/pelanggan/$id'),
+      Uri.parse('http://10.98.206.67:8000/api/pelanggan/$id'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'nama': nama,
@@ -120,7 +120,7 @@ class ApiPelanggan {
   if (token == null) return false;
 
   final response = await http.put(
-    Uri.parse('http://10.22.112.67:8000/api/change-password'),
+    Uri.parse('http://10.98.206.67:8000/api/change-password'),
     headers: {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',

@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       // 1. Coba login sebagai Admin/User
       final userResponse = await http.post(
-        Uri.parse('http://10.22.112.67:8000/api/login'),
+        Uri.parse('http://10.98.206.67:8000/api/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -44,14 +44,15 @@ class _LoginPageState extends State<LoginPage> {
         await prefs.setString('token', data['token']);
         await prefs.setString('role', 'admin');
         await prefs.setString('user_name', data['user']['name']);
-          await prefs.setString('user_email', data['user']['email'] ?? '');
+        await prefs.setString('user_email', data['user']['email'] ?? '');
+        await prefs.setInt('id', data['user']['id']); // Tambahkan baris ini
         Navigator.pushReplacementNamed(context, '/home');
         return;
       }
 
       // 2. Jika gagal, coba login sebagai pelanggan
       final pelangganResponse = await http.post(
-        Uri.parse('http://10.22.112.67:8000/api/login-pelanggan'),
+        Uri.parse('http://10.98.206.67:8000/api/login-pelanggan'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
@@ -61,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
         await prefs.setString('token', data['token']);
         await prefs.setString('role', 'pelanggan');
         final pelanggan = data['pelanggan'];
+        await prefs.setInt('id', pelanggan['id_pelanggan']); // Tambahkan baris ini
         await prefs.setInt('pelanggan_id', pelanggan['id_pelanggan']);
         await prefs.setString('pelanggan_nama', pelanggan['nama'] ?? '');
         await prefs.setString('pelanggan_email', pelanggan['email'] ?? '');
@@ -139,14 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 12),
 
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {}, // Buat halaman lupa password jika dibutuhkan
-                        child: const Text("Lupa password?"),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
+                  
 
                     /// Tombol Login
                     isLoading

@@ -7,7 +7,7 @@ class HapusUserDialog extends StatelessWidget {
   const HapusUserDialog({Key? key, required this.user}) : super(key: key);
 
   Future<void> _hapusUser(BuildContext context) async {
-    bool success = await ApiUser.deleteUser(user.id!);
+    bool success = await ApiUser.deleteUser(user.id);
     if (success) {
       Navigator.pop(context, true);
       ScaffoldMessenger.of(context).showSnackBar(
