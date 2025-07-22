@@ -24,69 +24,134 @@ class PenjualanController extends Controller
         return view('penjualan.create', compact('pelanggans', 'obats'));
     }
 
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'tanggal' => 'required|date',
+    //         'id_pelanggan' => 'required|exists:pelanggans,id_pelanggan',
+    //         'obat_id' => 'required|array',
+    //         'obat_id.*' => 'required|exists:obats,id_obat',
+    //         'jumlah' => 'required|array',
+    //         'jumlah.*' => 'required|integer|min:1',
+    //         'harga_satuan' => 'required|array',
+    //         'harga_satuan.*' => 'required|numeric|min:0',
+    //         'bayar' => 'required|numeric|min:0',
+    //         'kembalian' => 'required|numeric|min:0',
+    //     ]);
+
+    //     DB::beginTransaction();
+
+    //     try {
+    //         $total_harga = 0;
+    //         foreach ($request->jumlah as $key => $jumlah) {
+    //             $harga_satuan = $request->harga_satuan[$key];
+    //             $subtotal = $jumlah * $harga_satuan;
+    //             $total_harga += $subtotal;
+    //         }
+
+    //         // Optional: cek apakah bayar cukup
+    //         if ($request->bayar < $total_harga) {
+    //             return back()->withErrors('Jumlah bayar kurang dari total harga')->withInput();
+    //         }
+
+    //         $penjualan = Penjualan::create([
+    //             'tanggal' => $request->tanggal,
+    //             'id_pelanggan' => $request->id_pelanggan,
+    //             'total_harga' => $total_harga,
+    //             'bayar' => $request->bayar,
+    //             'kembalian' => $request->kembalian,
+    //         ]);
+
+    //         foreach ($request->obat_id as $key => $obat_id) {
+    //             $jumlah = $request->jumlah[$key];
+    //             $harga_satuan = $request->harga_satuan[$key];
+    //             $subtotal = $jumlah * $harga_satuan;
+
+    //             PenjualanDetail::create([
+    //                 'id_penjualan' => $penjualan->id_penjualan,
+    //                 'id_obat' => $obat_id,
+    //                 'jumlah' => $jumlah,
+    //                 'harga_satuan' => $harga_satuan,
+    //                 'subtotal' => $subtotal,
+    //             ]);
+
+    //             // Kurangi stok obat
+    //             Obat::where('id_obat', $obat_id)->decrement('stok', $jumlah);
+    //         }
+
+    //         DB::commit();
+
+    //         return redirect()->route('penjualan.index')->with('success', 'Penjualan berhasil disimpan.');
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return back()->withErrors('Gagal menyimpan penjualan: ' . $e->getMessage())->withInput();
+    //     }
+    // }
     public function store(Request $request)
-    {
-        $request->validate([
-            'tanggal' => 'required|date',
-            'id_pelanggan' => 'required|exists:pelanggans,id_pelanggan',
-            'obat_id' => 'required|array',
-            'obat_id.*' => 'required|exists:obats,id_obat',
-            'jumlah' => 'required|array',
-            'jumlah.*' => 'required|integer|min:1',
-            'harga_satuan' => 'required|array',
-            'harga_satuan.*' => 'required|numeric|min:0',
-            'bayar' => 'required|numeric|min:0',
-            'kembalian' => 'required|numeric|min:0',
+{
+    $request->validate([
+        // 'tanggal' => 'required|date', // baris ini DIHAPUS karena kita pakai now()
+        'id_pelanggan' => 'required|exists:pelanggans,id_pelanggan',
+        'obat_id' => 'required|array',
+        'obat_id.*' => 'required|exists:obats,id_obat',
+        'jumlah' => 'required|array',
+        'jumlah.*' => 'required|integer|min:1',
+        'harga_satuan' => 'required|array',
+        'harga_satuan.*' => 'required|numeric|min:0',
+        'bayar' => 'required|numeric|min:0',
+        'kembalian' => 'required|numeric|min:0',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $total_harga = 0;
+        foreach ($request->jumlah as $key => $jumlah) {
+            $harga_satuan = $request->harga_satuan[$key];
+            $subtotal = $jumlah * $harga_satuan;
+            $total_harga += $subtotal;
+        }
+
+        // Optional: cek apakah bayar cukup
+        if ($request->bayar < $total_harga) {
+            return back()->withErrors('Jumlah bayar kurang dari total harga')->withInput();
+        }
+
+        // SIMPAN TANGGAL DAN JAM OTOMATIS
+        $penjualan = Penjualan::create([
+            'tanggal' => now(), // menyimpan tanggal dan waktu saat ini
+            'id_pelanggan' => $request->id_pelanggan,
+            'total_harga' => $total_harga,
+            'bayar' => $request->bayar,
+            'kembalian' => $request->kembalian,
         ]);
 
-        DB::beginTransaction();
+        foreach ($request->obat_id as $key => $obat_id) {
+            $jumlah = $request->jumlah[$key];
+            $harga_satuan = $request->harga_satuan[$key];
+            $subtotal = $jumlah * $harga_satuan;
 
-        try {
-            $total_harga = 0;
-            foreach ($request->jumlah as $key => $jumlah) {
-                $harga_satuan = $request->harga_satuan[$key];
-                $subtotal = $jumlah * $harga_satuan;
-                $total_harga += $subtotal;
-            }
-
-            // Optional: cek apakah bayar cukup
-            if ($request->bayar < $total_harga) {
-                return back()->withErrors('Jumlah bayar kurang dari total harga')->withInput();
-            }
-
-            $penjualan = Penjualan::create([
-                'tanggal' => $request->tanggal,
-                'id_pelanggan' => $request->id_pelanggan,
-                'total_harga' => $total_harga,
-                'bayar' => $request->bayar,
-                'kembalian' => $request->kembalian,
+            PenjualanDetail::create([
+                'id_penjualan' => $penjualan->id_penjualan,
+                'id_obat' => $obat_id,
+                'jumlah' => $jumlah,
+                'harga_satuan' => $harga_satuan,
+                'subtotal' => $subtotal,
             ]);
 
-            foreach ($request->obat_id as $key => $obat_id) {
-                $jumlah = $request->jumlah[$key];
-                $harga_satuan = $request->harga_satuan[$key];
-                $subtotal = $jumlah * $harga_satuan;
-
-                PenjualanDetail::create([
-                    'id_penjualan' => $penjualan->id_penjualan,
-                    'id_obat' => $obat_id,
-                    'jumlah' => $jumlah,
-                    'harga_satuan' => $harga_satuan,
-                    'subtotal' => $subtotal,
-                ]);
-
-                // Kurangi stok obat
-                Obat::where('id_obat', $obat_id)->decrement('stok', $jumlah);
-            }
-
-            DB::commit();
-
-            return redirect()->route('penjualan.index')->with('success', 'Penjualan berhasil disimpan.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->withErrors('Gagal menyimpan penjualan: ' . $e->getMessage())->withInput();
+            // Kurangi stok obat
+            Obat::where('id_obat', $obat_id)->decrement('stok', $jumlah);
         }
+
+        DB::commit();
+
+        return redirect()->route('penjualan.index')->with('success', 'Penjualan berhasil disimpan.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->withErrors('Gagal menyimpan penjualan: ' . $e->getMessage())->withInput();
     }
+}
+
 
     public function show($id)
     {

@@ -11,9 +11,11 @@
 
 @if($errors->any())
     <div class="alert alert-danger">
-        <ul>@foreach($errors->all() as $error)
+        <ul>
+        @foreach($errors->all() as $error)
             <li>{{ $error }}</li>
-        @endforeach</ul>
+        @endforeach
+        </ul>
     </div>
 @endif
 
@@ -31,7 +33,7 @@
     @foreach($pembelians as $no => $pembelian)
         <tr>
             <td>{{ $no + 1 }}</td>
-            <td>{{ \Carbon\Carbon::parse($pembelian->tanggal)->format('d-m-Y') }}</td>
+            <td>{{ \Carbon\Carbon::parse($pembelian->tanggal)->format('d-m-Y H:i:s') }}</td>
             <td>{{ $pembelian->pemasok->nama ?? '-' }}</td>
             <td>Rp {{ number_format($pembelian->total_harga,0,',','.') }}</td>
             <td>
@@ -43,7 +45,7 @@
                         <button type="button" class="btn btn-sm btn-danger btn-hapus">
                             <i class="fas fa-trash"></i> 
                         </button>
-                    </form>
+                </form>
             </td>
         </tr>
     @endforeach
